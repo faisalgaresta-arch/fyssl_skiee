@@ -3,25 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify - Web Player</title>
+    <title>Galeri Digital - Inspirasi dari Artis Pilihan</title>
     
     <!-- Font Awesome untuk Ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     
-    <!-- Google Fonts (Circular Stand-in) -->
+    <!-- Google Fonts - Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         /* --- Variabel Warna & Font --- */
         :root {
-            --spotify-black: #121212;
-            --spotify-highlight: #282828;
-            --spotify-grey: #b3b3b3;
-            --spotify-white: #ffffff;
-            --spotify-green: #1DB954;
-            --font-family: 'Montserrat', sans-serif;
+            --bg-primary: #0f0f0f;
+            --bg-card: #1a1a1a;
+            --color-accent-purple: #8a3ab9;
+            --color-accent-cyan: #4c9eeb;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border-color: #2c2c2c;
+            --font-family: 'Poppins', sans-serif;
         }
 
         /* --- Reset & Global --- */
@@ -32,619 +34,568 @@
         }
 
         body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
             font-family: var(--font-family);
-            background-color: var(--spotify-black);
-            color: var(--spotify-white);
-            overflow: hidden; /* Mencegah scroll di body, karena main content yang akan scroll */
+            line-height: 1.5;
         }
 
-        /* --- Layout Utama --- */
-        .app-container {
-            display: grid;
-            grid-template-areas:
-                "sidebar main"
-                "now-playing now-playing";
-            grid-template-columns: 240px 1fr;
-            grid-template-rows: 1fr 90px;
-            height: 100vh;
+        /* --- Layout Container --- */
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
-        /* --- Sidebar Kiri --- */
-        .sidebar {
-            grid-area: sidebar;
-            background-color: #000000;
-            padding: 24px 16px;
+        /* --- Header --- */
+        header {
+            background-color: rgba(15, 15, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
             display: flex;
-            flex-direction: column;
-            gap: 8px;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .logo {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--spotify-green);
-            margin-bottom: 24px;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            color: var(--spotify-grey);
-            text-decoration: none;
-            padding: 10px 14px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 600;
-            transition: background-color 0.2s ease;
-        }
-
-        .nav-item:hover {
-            background-color: var(--spotify-highlight);
-            color: var(--spotify-white);
-        }
-
-        .nav-item.active {
-            background-color: var(--spotify-highlight);
-            color: var(--spotify-white);
-        }
-
-        .nav-item i {
-            font-size: 20px;
-        }
-
-        .playlist-section {
-            margin-top: 24px;
-            border-top: 1px solid var(--spotify-highlight);
-            padding-top: 16px;
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-
-        .playlist-title {
-            color: var(--spotify-grey);
-            font-size: 12px;
+            font-size: 2rem;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 16px;
-        }
-
-        .playlist-item {
-            display: block;
-            color: var(--spotify-grey);
+            background: linear-gradient(45deg, var(--color-accent-purple), var(--color-accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             text-decoration: none;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s ease;
         }
 
-        .playlist-item:hover {
-            color: var(--spotify-white);
+        .search-bar {
+            flex-grow: 1;
+            max-width: 400px;
+            margin: 0 40px;
         }
 
-        .user-profile {
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.9em;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--color-accent-purple);
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 25px;
+            font-size: 1.3em;
+        }
+
+        .nav-icons a {
+            color: var(--text-primary);
+            transition: color 0.3s ease;
+        }
+
+        .nav-icons a:hover {
+            color: var(--color-accent-cyan);
+        }
+
+        /* --- Main Content (Feed) --- */
+        main {
+            margin-top: 40px;
+        }
+
+        .feed {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* --- Post Card --- */
+        .post-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(138, 58, 185, 0.2);
+        }
+
+        .post-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            background-color: var(--spotify-highlight);
-            padding: 8px;
-            border-radius: 8px;
-            margin-top: 16px;
+            justify-content: space-between;
+            padding: 15px;
         }
 
-        .user-avatar {
-            width: 28px;
-            height: 28px;
-            background-color: var(--spotify-grey);
-            border-radius: 50%;
-        }
-
-        .user-name {
-            font-size: 14px;
-            font-weight: 600;
-            flex-grow: 1;
-        }
-
-        .user-profile i {
-            color: var(--spotify-grey);
-        }
-
-        /* --- Konten Utama --- */
-        .main-content {
-            grid-area: main;
-            background: linear-gradient(to bottom, #1f1f1f, var(--spotify-black));
-            overflow-y: auto; /* Hanya bagian ini yang bisa di-scroll */
-            padding: 24px 32px;
-        }
-
-        .playlist-header {
+        .post-user-info {
             display: flex;
-            align-items: flex-end;
-            gap: 24px;
-            margin-bottom: 24px;
+            align-items: center;
         }
 
-        .playlist-cover {
-            width: 232px;
-            height: 232px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 12px;
+            border: 2px solid transparent;
+            background: linear-gradient(white, white) padding-box,
+                        linear-gradient(45deg, var(--color-accent-purple), var(--color-accent-cyan)) border-box;
+            object-fit: cover;
         }
 
-        .playlist-info h1 {
-            font-size: 72px;
-            font-weight: 900;
+        .post-username {
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .post-options {
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .post-image {
+            width: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .post-actions {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .action-buttons i {
+            font-size: 1.4em;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .action-buttons i:hover {
+            color: var(--color-accent-cyan);
+            transform: scale(1.1);
+        }
+        
+        .action-buttons i.liked {
+            color: var(--color-accent-purple);
+            animation: likeAnimation 0.4s ease;
+        }
+
+        @keyframes likeAnimation {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        .post-details {
+            padding: 0 15px 15px;
+        }
+
+        .post-likes {
+            font-weight: 600;
             margin-bottom: 8px;
         }
 
-        .playlist-info p {
-            color: var(--spotify-grey);
-            font-weight: 500;
+        .post-caption {
+            margin-bottom: 8px;
         }
 
-        .playlist-controls {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-
-        .play-button {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background-color: var(--spotify-green);
-            border: none;
-            color: var(--spotify-black);
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-        .play-button:hover {
-            transform: scale(1.05);
-        }
-
-        .other-controls {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            color: var(--spotify-grey);
-        }
-
-        .other-controls i {
-            font-size: 32px;
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-
-        .other-controls i:hover {
-            color: var(--spotify-white);
-        }
-
-        .track-list {
-            margin-top: 24px;
-        }
-
-        .track-header {
-            display: grid;
-            grid-template-columns: 16px 1fr 3fr 2fr 200px;
-            gap: 16px;
-            padding: 8px 16px;
-            color: var(--spotify-grey);
-            font-size: 12px;
+        .post-caption span {
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid var(--spotify-highlight);
+            margin-right: 5px;
         }
 
-        .track-row {
-            display: grid;
-            grid-template-columns: 16px 1fr 3fr 2fr 200px;
-            gap: 16px;
-            padding: 12px 16px;
-            border-radius: 4px;
-            align-items: center;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
+        .post-time {
+            font-size: 0.8em;
+            color: var(--text-secondary);
         }
 
-        .track-row:hover {
-            background-color: var(--spotify-highlight);
-        }
-
-        .track-row:hover .track-index {
-            display: none;
-        }
-
-        .track-row:hover .play-icon {
-            display: block;
-        }
-
-        .track-index {
-            color: var(--spotify-grey);
-        }
-
-        .play-icon {
-            display: none;
-            color: var(--spotify-white);
-        }
-
-        .track-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .track-title {
-            font-weight: 500;
-        }
-
-        .track-artist {
-            color: var(--spotify-grey);
-            font-size: 14px;
-        }
-
-        .track-album {
-            color: var(--spotify-grey);
-        }
-
-        .track-duration {
-            color: var(--spotify-grey);
-        }
-        
-        /* --- Pemutar Musik di Bawah --- */
-        .now-playing-bar {
-            grid-area: now-playing;
-            background-color: var(--spotify-highlight);
-            border-top: 1px solid #000;
-            padding: 0 16px;
-            display: grid;
-            grid-template-columns: 1fr 2fr 1fr;
-            align-items: center;
-        }
-
-        .now-playing-track-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .now-playing-cover {
-            width: 56px;
-            height: 56px;
-        }
-
-        .now-playing-title-artist p {
-            font-size: 14px;
-        }
-
-        .now-playing-title-artist p:first-child {
-            font-weight: 500;
-        }
-
-        .now-playing-title-artist p:last-child {
-            font-size: 12px;
-            color: var(--spotify-grey);
-        }
-
-        .now-playing-controls {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .player-buttons {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .player-buttons i {
-            color: var(--spotify-grey);
-            cursor: pointer;
-            transition: color 0.2s ease;
-        }
-
-        .player-buttons i:hover {
-            color: var(--spotify-white);
-        }
-
-        .player-buttons i.play-pause {
-            color: var(--spotify-white);
-            background-color: transparent;
-            border: none;
-            font-size: 20px;
-        }
-        
-        .player-buttons i.play-pause:hover {
-            transform: scale(1.1);
-        }
-
-        .progress-bar {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .progress-bar span {
-            font-size: 12px;
-            color: var(--spotify-grey);
-            min-width: 40px;
-        }
-
-        .progress-bar input[type="range"] {
-            flex-grow: 1;
-            height: 4px;
-            background: var(--spotify-grey);
-            border-radius: 2px;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        .progress-bar input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 12px;
-            height: 12px;
-            background: var(--spotify-white);
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .now-playing-extras {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 16px;
-        }
-
-        .now-playing-extras i {
-            color: var(--spotify-grey);
-            cursor: pointer;
-        }
-
-        .now-playing-extras i:hover {
-            color: var(--spotify-white);
-        }
-
-        .volume-bar {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .volume-bar input[type="range"] {
-            width: 100px;
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            border-top: 1px solid var(--border-color);
+            margin-top: 60px;
         }
     </style>
 </head>
 <body>
 
-    <div class="app-container">
-        <!-- Sidebar Kiri -->
-        <aside class="sidebar">
-            <div class="logo"><i class="fab fa-spotify"></i> Spotify</div>
-            <nav>
-                <a href="#" class="nav-item active"><i class="fas fa-home"></i> Beranda</a>
-                <a href="#" class="nav-item"><i class="fas fa-search"></i> Telusuri</a>
-                <a href="#" class="nav-item"><i class="fas fa-book"></i> Perpustakaan Anda</a>
+    <header>
+        <div class="container header-content">
+            <a href="#" class="logo">Galeri Digital</a>
+            <div class="search-bar">
+                <input type="text" placeholder="Cari artis atau karya...">
+            </div>
+            <nav class="nav-icons">
+                <a href="#"><i class="fas fa-home"></i></a>
+                <a href="#"><i class="fas fa-compass"></i></a>
+                <a href="#"><i class="fas fa-plus-square"></i></a>
+                <a href="#"><i class="fas fa-heart"></i></a>
+                <a href="#"><i class="fas fa-user-circle"></i></a>
             </nav>
-            <div class="playlist-section">
-                <div class="playlist-title">Playlist</div>
-                <a href="#" class="playlist-item">Lagu Favorit</a>
-                <a href="#" class="playlist-item">Daily Mix 1</a>
-                <a href="#" class="playlist-item">Chill Vibes</a>
-                <a href="#" class="playlist-item">Workout</a>
-                <a href="#" class="playlist-item">Focus Flow</a>
-                <a href="#" class="playlist-item">Discover Weekly</a>
-                <a href="#" class="playlist-item">Release Radar</a>
-            </div>
-            <div class="user-profile">
-                <div class="user-avatar"></div>
-                <span class="user-name">Nama Pengguna</span>
-                <i class="fas fa-chevron-down"></i>
-            </div>
-        </aside>
+        </div>
+    </header>
 
-        <!-- Konten Utama -->
-        <main class="main-content">
-            <div class="playlist-header">
-                <img src="https://picsum.photos/seed/spotify-playlist/232/232" alt="Playlist Cover" class="playlist-cover">
-                <div class="playlist-info">
-                    <h1>Chill Vibes</h1>
-                    <p>Dapatkan suasana hati yang tenang dengan lagu-lagu ini. Disusun oleh Nama Pengguna.</p>
-                </div>
-            </div>
-            <div class="playlist-controls">
-                <button class="play-button" id="main-play-btn"><i class="fas fa-play"></i></button>
-                <div class="other-controls">
-                    <i class="far fa-heart"></i>
-                    <i class="fas fa-ellipsis-h"></i>
-                </div>
-            </div>
-            <div class="track-list">
-                <div class="track-header">
-                    <div>#</div>
-                    <div>Judul</div>
-                    <div>Album</div>
-                    <div>Tanggal Ditambahkan</div>
-                    <div><i class="fas fa-clock"></i></div>
-                </div>
-                <!-- Baris Lagu 1 -->
-                <div class="track-row" data-track-title="Midnight City" data-track-artist="M83">
-                    <span class="track-index">1</span>
-                    <i class="fas fa-play play-icon"></i>
-                    <div class="track-info">
-                        <div class="track-title">Midnight City</div>
+    <div class="container">
+        <main class="feed">
+            <!-- Post 1: Prilly Latuconsina -->
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="post-user-info">
+                        <img src="https://picsum.photos/seed/prilly-avatar/40/40" alt="Avatar Prilly" class="post-avatar">
+                        <a href="#" class="post-username">prillylatuconsina</a>
                     </div>
-                    <div class="track-artist">M83</div>
-                    <div class="track-album">Hurry Up, We're Dreaming</div>
-                    <div class="track-duration">4:03</div>
+                    <i class="fas fa-ellipsis-h post-options"></i>
                 </div>
-                <!-- Baris Lagu 2 -->
-                <div class="track-row" data-track-title="Breathe Me" data-track-artist="Sia">
-                    <span class="track-index">2</span>
-                    <i class="fas fa-play play-icon"></i>
-                    <div class="track-info">
-                        <div class="track-title">Breathe Me</div>
+                <img src="https://picsum.photos/seed/prilly-posting/950/950" alt="Foto Prilly Latuconsina" class="post-image">
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <i class="far fa-heart like-button"></i>
+                        <i class="far fa-comment"></i>
+                        <i class="far fa-paper-plane"></i>
                     </div>
-                    <div class="track-artist">Sia</div>
-                    <div class="track-album">Colour the Small One</div>
-                    <div class="track-duration">4:31</div>
+                    <i class="far fa-bookmark"></i>
                 </div>
-                <!-- Baris Lagu 3 -->
-                <div class="track-row" data-track-title="Skinny Love" data-track-artist="Bon Iver">
-                    <span class="track-index">3</span>
-                    <i class="fas fa-play play-icon"></i>
-                    <div class="track-info">
-                        <div class="track-title">Skinny Love</div>
+                <div class="post-details">
+                    <p class="post-likes"><span class="likes-count">125,543</span> suka</p>
+                    <p class="post-caption"><span>prillylatuconsina</span> Senyum bahagia di sela-sela syuting. Terima kasih untuk hari ini! 😊</p>
+                    <p class="post-time">2 jam yang lalu</p>
+                </div>
+            </article>
+
+            <!-- Post 2: Iqbaal Ramadhan -->
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="post-user-info">
+                        <img src="https://picsum.photos/seed/iqbaal-avatar/40/40" alt="Avatar Iqbaal" class="post-avatar">
+                        <a href="#" class="post-username">iqbaal.e</a>
                     </div>
-                    <div class="track-artist">Bon Iver</div>
-                    <div class="track-album">For Emma, Forever Ago</div>
-                    <div class="track-duration">3:58</div>
+                    <i class="fas fa-ellipsis-h post-options"></i>
                 </div>
-                <!-- Baris Lagu 4 -->
-                <div class="track-row" data-track-title="Holocene" data-track-artist="Bon Iver">
-                    <span class="track-index">4</span>
-                    <i class="fas fa-play play-icon"></i>
-                    <div class="track-info">
-                        <div class="track-title">Holocene</div>
+                <img src="https://picsum.photos/seed/iqbaal-posting/950/1200" alt="Foto Iqbaal Ramadhan" class="post-image">
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <i class="far fa-heart like-button"></i>
+                        <i class="far fa-comment"></i>
+                        <i class="far fa-paper-plane"></i>
                     </div>
-                    <div class="track-artist">Bon Iver</div>
-                    <div class="track-album">Bon Iver</div>
-                    <div class="track-duration">5:36</div>
+                    <i class="far fa-bookmark"></i>
                 </div>
-            </div>
+                <div class="post-details">
+                    <p class="post-likes"><span class="likes-count">250,891</span> suka</p>
+                    <p class="post-caption"><span>iqbaal.e</span> Melodi dan cerita. Mana suaranya yang paling kamu suka? 🎶🎬</p>
+                    <p class="post-time">5 jam yang lalu</p>
+                </div>
+            </article>
+
+            <!-- Post 3: Raisa -->
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="post-user-info">
+                        <img src="https://picsum.photos/seed/raisa-avatar/40/40" alt="Avatar Raisa" class="post-avatar">
+                        <a href="#" class="post-username">raisa6690</a>
+                    </div>
+                    <i class="fas fa-ellipsis-h post-options"></i>
+                </div>
+                <img src="https://picsum.photos/seed/raisa-posting/950/950" alt="Foto Raisa" class="post-image">
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <i class="far fa-heart like-button"></i>
+                        <i class="far fa-comment"></i>
+                        <i class="far fa-paper-plane"></i>
+                    </div>
+                    <i class="far fa-bookmark"></i>
+                </div>
+                <div class="post-details">
+                    <p class="post-likes"><span class="likes-count">302,150</span> suka</p>
+                    <p class="post-caption"><span>raisa6690</span> Ada lagu untuk malam ini? 🎤✨</p>
+                    <p class="post-time">1 hari yang lalu</p>
+                </div>
+            </article>
+
+            <!-- Post 4: Anya Geraldine -->
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="post-user-info">
+                        <img src="https://picsum.photos/seed/anya-avatar/40/40" alt="Avatar Anya" class="post-avatar">
+                        <a href="#" class="post-username">anyageraldine</a>
+                    </div>
+                    <i class="fas fa-ellipsis-h post-options"></i>
+                </div>
+                <img src="https://picsum.photos/seed/anya-posting/950/750" alt="Foto Anya Geraldine" class="post-image">
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <i class="far fa-heart like-button"></i>
+                        <i class="far fa-comment"></i>
+                        <i class="far fa-paper-plane"></i>
+                    </div>
+                    <i class="far fa-bookmark"></i>
+                </div>
+                <div class="post-details">
+                    <p class="post-likes"><span class="likes-count">445,678</span> suka</p>
+                    <p class="post-caption"><span>anyageraldine</span> Cahaya sore yang tak pernah bosan saya lihat. 🌅</p>
+                    <p class="post-time">2 hari yang lalu</p>
+                </div>
+            </article>
+
+            <!-- Post 5: Syahrini -->
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="post-user-info">
+                        <img src="https://picsum.photos/seed/syahrini-avatar/40/40" alt="Avatar Syahrini" class="post-avatar">
+                        <a href="#" class="post-username">princessyahrini</a>
+                    </div>
+                    <i class="fas fa-ellipsis-h post-options"></i>
+                </div>
+                <img src="https://picsum.photos/seed/syahrini-luxury/950/1200" alt="Foto Syahrini" class="post-image">
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <i class="far fa-heart like-button"></i>
+                        <i class="far fa-comment"></i>
+                        <i class="far fa-paper-plane"></i>
+                    </div>
+                    <i class="far fa-bookmark"></i>
+                </div>
+                <div class="post-details">
+                    <p class="post-likes"><span class="likes-count">510,322</span> suka</p>
+                    <p class="post-caption"><span>princessyahrini</span> Jangan tanya aku lagi, ini adalah benda mewah. 💎✨</p>
+                    <p class="post-time">3 hari yang lalu</p>
+                </div>
+            </article>
+
+            <!-- Post 6: Nagita Slavina -->
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="post-user-info">
+                        <img src="https://picsum.photos/seed/nagita-avatar/40/40" alt="Avatar Nagita" class="post-avatar">
+                        <a href="#" class="post-username">ragininoor</a>
+                    </div>
+                    <i class="fas fa-ellipsis-h post-options"></i>
+                </div>
+                <img src="https://picsum.photos/seed/nagita-family/950/750" alt="Foto Nagita Slavina" class="post-image">
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <i class="far fa-heart like-button"></i>
+                        <i class="far fa-comment"></i>
+                        <i class="far fa-paper-plane"></i>
+                    </div>
+                    <i class="far fa-bookmark"></i>
+                </div>
+                <div class="post-details">
+                    <p class="post-likes"><span class="likes-count">987,654</span> suka</p>
+                    <p class="post-caption"><span>ragininoor</span> Momen simple bersama orang tersayang. ❤️</p>
+                    <p class="post-time">4 hari yang lalu</p>
+                </div>
+            </article>
+
+            <!-- Post 7: Ari Lasso -->
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="post-user-info">
+                        <img src="https://picsum.photos/seed/ari-lasso-avatar/40/40" alt="Avatar Ari Lasso" class="post-avatar">
+                        <a href="#" class="post-username">arilasso</a>
+                    </div>
+                    <i class="fas fa-ellipsis-h post-options"></i>
+                </div>
+                <img src="https://picsum.photos/seed/ari-lasso-concert/950/950" alt="Foto Ari Lasso" class="post-image">
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <i class="far fa-heart like-button"></i>
+                        <i class="far fa-comment"></i>
+                        <i class="far fa-paper-plane"></i>
+                    </div>
+                    <i class="far fa-bookmark"></i>
+                </div>
+                <div class="post-details">
+                    <p class="post-likes"><span class="likes-count">88,765</span> suka</p>
+                    <p class="post-caption"><span>arilasso</span> Hampa... tapi panggung ini selalu membuatku utuh. Terima kasih Jakarta! 🎸</p>
+                    <p class="post-time">5 hari yang lalu</p>
+                </div>
+            </article>
+
+            <!-- Post 8: Sheila Dara -->
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="post-user-info">
+                        <img src="https://picsum.photos/seed/sheiladara-avatar/40/40" alt="Avatar Sheila Dara" class="post-avatar">
+                        <a href="#" class="post-username">sheiladara</a>
+                    </div>
+                    <i class="fas fa-ellipsis-h post-options"></i>
+                </div>
+                <img src="https://picsum.photos/seed/sheiladara-natural/950/1200" alt="Foto Sheila Dara" class="post-image">
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <i class="far fa-heart like-button"></i>
+                        <i class="far fa-comment"></i>
+                        <i class="far fa-paper-plane"></i>
+                    </div>
+                    <i class="far fa-bookmark"></i>
+                </div>
+                <div class="post-details">
+                    <p class="post-likes"><span class="likes-count">210,987</span> suka</p>
+                    <p class="post-caption"><span>sheiladara</span> Menemukan kedamaian dalam keheningan. 🍃</p>
+                    <p class="post-time">6 hari yang lalu</p>
+                </div>
+            </article>
+
+            <!-- Post 9: Vino G. Bastian -->
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="post-user-info">
+                        <img src="https://picsum.photos/seed/vino-avatar/40/40" alt="Avatar Vino" class="post-avatar">
+                        <a href="#" class="post-username">vinogbastian</a>
+                    </div>
+                    <i class="fas fa-ellipsis-h post-options"></i>
+                </div>
+                <img src="https://picsum.photos/seed/vino-movie/950/750" alt="Foto Vino G. Bastian" class="post-image">
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <i class="far fa-heart like-button"></i>
+                        <i class="far fa-comment"></i>
+                        <i class="far fa-paper-plane"></i>
+                    </div>
+                    <i class="far fa-bookmark"></i>
+                </div>
+                <div class="post-details">
+                    <p class="post-likes"><span class="likes-count">342,100</span> suka</p>
+                    <p class="post-caption"><span>vinogbastian</span> Dibalik layar, ada kerja keras dan dedikasi. Film baru segera! 🎬</p>
+                    <p class="post-time">1 minggu yang lalu</p>
+                </div>
+            </article>
+
+            <!-- Post 10: Dikta -->
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="post-user-info">
+                        <img src="https://picsum.photos/seed/dikta-avatar/40/40" alt="Avatar Dikta" class="post-avatar">
+                        <a href="#" class="post-username">dikta.prakoso</a>
+                    </div>
+                    <i class="fas fa-ellipsis-h post-options"></i>
+                </div>
+                <img src="https://picsum.photos/seed/dikta-acoustic/950/950" alt="Foto Dikta" class="post-image">
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <i class="far fa-heart like-button"></i>
+                        <i class="far fa-comment"></i>
+                        <i class="far fa-paper-plane"></i>
+                    </div>
+                    <i class="far fa-bookmark"></i>
+                </div>
+                <div class="post-details">
+                    <p class="post-likes"><span class="likes-count">156,432</span> suka</p>
+                    <p class="post-caption"><span>dikta.prakoso</span> Request lagu apa nanti malam? Siap untuk gitar akustik. 🎸</p>
+                    <p class="post-time">1 minggu yang lalu</p>
+                </div>
+            </article>
+
+            <!-- Post 11: Lyodra -->
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="post-user-info">
+                        <img src="https://picsum.photos/seed/lyodra-avatar/40/40" alt="Avatar Lyodra" class="post-avatar">
+                        <a href="#" class="post-username">lyodraofficial</a>
+                    </div>
+                    <i class="fas fa-ellipsis-h post-options"></i>
+                </div>
+                <img src="https://picsum.photos/seed/lyodra-elegant/950/1200" alt="Foto Lyodra" class="post-image">
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <i class="far fa-heart like-button"></i>
+                        <i class="far fa-comment"></i>
+                        <i class="far fa-paper-plane"></i>
+                    </div>
+                    <i class="far fa-bookmark"></i>
+                </div>
+                <div class="post-details">
+                    <p class="post-likes"><span class="likes-count">523,890</span> suka</p>
+                    <p class="post-caption"><span>lyodraofficial</span> Pesona dari Indonesia. 🇮🇩✨</p>
+                    <p class="post-time">2 minggu yang lalu</p>
+                </div>
+            </article>
+
+            <!-- Post 12: Tiara Andini -->
+            <article class="post-card">
+                <div class="post-header">
+                    <div class="post-user-info">
+                        <img src="https://picsum.photos/seed/tiara-avatar/40/40" alt="Avatar Tiara" class="post-avatar">
+                        <a href="#" class="post-username">tiaraandini</a>
+                    </div>
+                    <i class="fas fa-ellipsis-h post-options"></i>
+                </div>
+                <img src="https://picsum.photos/seed/tiara-youthful/950/950" alt="Foto Tiara Andini" class="post-image">
+                <div class="post-actions">
+                    <div class="action-buttons">
+                        <i class="far fa-heart like-button"></i>
+                        <i class="far fa-comment"></i>
+                        <i class="far fa-paper-plane"></i>
+                    </div>
+                    <i class="far fa-bookmark"></i>
+                </div>
+                <div class="post-details">
+                    <p class="post-likes"><span class="likes-count">412,765</span> suka</p>
+                    <p class="post-caption"><span>tiaraandini</span> Merasakan semangat muda yang tak terbatas. 💖</p>
+                    <p class="post-time">2 minggu yang lalu</p>
+                </div>
+            </article>
+
         </main>
-
-        <!-- Pemutar Musik di Bawah -->
-        <footer class="now-playing-bar">
-            <div class="now-playing-track-info">
-                <img src="https://picsum.photos/seed/now-playing/56/56" alt="Now Playing Cover" class="now-playing-cover" id="now-playing-cover">
-                <div class="now-playing-title-artist">
-                    <p id="now-playing-title">Pilih lagu untuk diputar</p>
-                    <p id="now-playing-artist">-</p>
-                </div>
-                <i class="far fa-heart" id="like-btn"></i>
-            </div>
-            <div class="now-playing-controls">
-                <div class="player-buttons">
-                    <i class="fas fa-random"></i>
-                    <i class="fas fa-step-backward"></i>
-                    <button class="play-pause" id="play-pause-btn"><i class="fas fa-play"></i></button>
-                    <i class="fas fa-step-forward"></i>
-                    <i class="fas fa-redo"></i>
-                </div>
-                <div class="progress-bar">
-                    <span>0:00</span>
-                    <input type="range" min="0" max="100" value="0">
-                    <span>4:03</span>
-                </div>
-            </div>
-            <div class="now-playing-extras">
-                <i class="fas fa-list-ul"></i>
-                <i class="fas fa-desktop"></i>
-                <div class="volume-bar">
-                    <i class="fas fa-volume-up"></i>
-                    <input type="range" min="0" max="100" value="70">
-                </div>
-            </div>
-        </footer>
     </div>
 
+    <footer>
+        <p>&copy; 2024 Galeri Digital. Dibuat dengan ❤️ untuk para seniman Indonesia.</p>
+    </footer>
+
     <script>
-        // --- Elemen-elemen DOM yang akan dimanipulasi ---
-        const playPauseBtn = document.getElementById('play-pause-btn');
-        const mainPlayBtn = document.getElementById('main-play-btn');
-        const playPauseIcon = playPauseBtn.querySelector('i');
-        const mainPlayIcon = mainPlayBtn.querySelector('i');
-        const trackRows = document.querySelectorAll('.track-row');
-        const nowPlayingTitle = document.getElementById('now-playing-title');
-        const nowPlayingArtist = document.getElementById('now-playing-artist');
-        const nowPlayingCover = document.getElementById('now-playing-cover');
-        const likeBtn = document.getElementById('like-btn');
+        const likeButtons = document.querySelectorAll('.like-button');
+        const likesCounts = document.querySelectorAll('.likes-count');
 
-        let isPlaying = false;
-
-        // --- Fungsi untuk mengganti ikon play/pause ---
-        function togglePlayPause() {
-            isPlaying = !isPlaying;
-            if (isPlaying) {
-                playPauseIcon.classList.remove('fa-play');
-                playPauseIcon.classList.add('fa-pause');
-                mainPlayIcon.classList.remove('fa-play');
-                mainPlayIcon.classList.add('fa-pause');
-            } else {
-                playPauseIcon.classList.remove('fa-pause');
-                playPauseIcon.classList.add('fa-play');
-                mainPlayIcon.classList.remove('fa-pause');
-                mainPlayIcon.classList.add('fa-play');
-            }
-        }
-
-        // --- Event Listener untuk tombol play/pause di bar bawah ---
-        playPauseBtn.addEventListener('click', togglePlayPause);
-
-        // --- Event Listener untuk tombol play utama di konten ---
-        mainPlayBtn.addEventListener('click', () => {
-            if (trackRows.length > 0) {
-                // Jika belum ada lagu yang dipilih, pilih lagu pertama
-                const firstTrack = trackRows[0];
-                updateNowPlaying(firstTrack);
-            }
-            togglePlayPause();
-        });
-
-        // --- Fungsi untuk memperbarui informasi "Now Playing" ---
-        function updateNowPlaying(trackElement) {
-            const title = trackElement.dataset.trackTitle;
-            const artist = trackElement.dataset.trackArtist;
-            const coverSrc = trackElement.querySelector('.track-info').querySelector('img')?.src || 'https://picsum.photos/seed/default/56/56'; // Ambil gambar jika ada
-
-            nowPlayingTitle.textContent = title;
-            nowPlayingArtist.textContent = artist;
-            // Menggunakan gambar default atau gambar dari baris jika ada
-            // Untuk kesederhanaan, kita gunakan gambar yang sama untuk semua
-            nowPlayingCover.src = 'https://picsum.photos/seed/' + title + '/56/56'; 
-
-            // Hapus kelas 'active' dari semua baris
-            trackRows.forEach(row => row.style.backgroundColor = '');
-            // Beri latar belakang pada baris yang sedang diputar
-            trackElement.style.backgroundColor = 'var(--spotify-highlight)';
-        }
-
-        // --- Event Listener untuk setiap baris lagu ---
-        trackRows.forEach(row => {
-            row.addEventListener('click', () => {
-                updateNowPlaying(row);
-                // Jika belum diputar, mulai mainkan
-                if (!isPlaying) {
-                    togglePlayPause();
+        likeButtons.forEach((button, index) => {
+            button.addEventListener('click', function() {
+                this.classList.toggle('liked');
+                const icon = this.querySelector('i');
+                if (icon.classList.contains('far')) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas');
+                } else {
+                    icon.classList.remove('fas');
+                    icon.classList.add('far');
                 }
+                const likesCountElement = likesCounts[index];
+                let currentLikes = parseInt(likesCountElement.textContent.replace('.', ''));
+                if (this.classList.contains('liked')) {
+                    currentLikes++;
+                } else {
+                    currentLikes--;
+                }
+                likesCountElement.textContent = currentLikes.toLocaleString('id-ID');
             });
         });
-
-        // --- Event Listener untuk tombol "Like" ---
-        likeBtn.addEventListener('click', () => {
-            likeBtn.classList.toggle('far');
-            likeBtn.classList.toggle('fas');
-            likeBtn.classList.toggle('liked');
-            if (likeBtn.classList.contains('liked')) {
-                likeBtn.style.color = 'var(--spotify-green)';
-            } else {
-                likeBtn.style.color = 'var(--spotify-grey)';
-            }
-        });
-
     </script>
 </body>
 </html>
